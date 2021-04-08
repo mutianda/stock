@@ -19,41 +19,11 @@
                     <el-input v-model="stockName"></el-input>
                 </div>
             </div>
-            <div class="search-item">
-                <div class="item-label">名称</div>
-                <div class="item-input">
-                    <el-input v-model="stockName"></el-input>
-                </div>
-            </div>
-            <div class="search-item">
-                <div class="item-label">名称</div>
-                <div class="item-input">
-                    <el-input v-model="stockName"></el-input>
-                </div>
-            </div>
-            <div class="search-item">
-                <div class="item-label">名称</div>
-                <div class="item-input">
-                    <el-input v-model="stockName"></el-input>
-                </div>
-            </div>
+
 
             <div class="search-item">
-                <div class="item-label">名称</div>
-                <div class="item-input">
-                    <el-input v-model="stockName"></el-input>
-                </div>
-            </div>
-            <div class="search-item">
-                <div class="item-label">名称</div>
-                <div class="item-input">
-                    <el-input v-model="stockName"></el-input>
-                </div>
-            </div>
-
-            <div class="search-item">
-                <el-button type="primary">查询</el-button>
-                <el-button type="success">新增</el-button>
+                <el-button type="primary" @click="getTable(true)">查询</el-button>
+                <el-button type="success" @click="addOrEdit({},false)">新增</el-button>
 
 
             </div>
@@ -62,55 +32,89 @@
             <el-table
                     :data="tableData"
                     stripe
-                    style="width: 100%;height: 100%">
+                    class="custom-table"
+                   >
                 <el-table-column
-                        prop="date"
-                        label="日期"
+                        prop="share_code"
+                        label="股票编码"
                         width="180">
                 </el-table-column>
                 <el-table-column
-                        prop="name"
-                        label="姓名"
+                        prop="share_name"
+                        label="股票名称"
                         width="180">
                 </el-table-column>
-                <el-table-column
-                        prop="address"
-                        label="地址">
-                </el-table-column>
+              <el-table-column
+                prop="price_rise"
+                label="突破位">
+              </el-table-column>
+              <el-table-column
+                prop="price_down"
+                label="跌破位">
+              </el-table-column>
+              <el-table-column
+                prop="turn_hand"
+                label="换手率">
+              </el-table-column>
+              <el-table-column
+                prop="limit_up"
+                label="涨幅">
+              </el-table-column>
+              <el-table-column
+                label="操作">
+                <template slot-scope='{row}'>
+                  <el-button @click="addOrEdit(row,true)" type="warning" size="small">编辑</el-button>
+                  <el-button @click="remove(row)" type="danger" size="small">删除</el-button>
+                </template>
+              </el-table-column>
             </el-table>
         </div>
-
+      <add-or-edit-modal ref="addOrEditForm" @getTable="getTable"/>
     </div>
 </template>
 
 <script>
-	export default {
+	import AddOrEditModal from "@v/components/real-time-modal";
+  export default {
 		name: "index",
-		data() {
+    components: {AddOrEditModal},
+    data() {
 			return {
 				stockName:'',
-				tableData: [{
-					date: '2016-05-02',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1518 弄'
-				}, {
-					date: '2016-05-04',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1517 弄'
-				}, {
-					date: '2016-05-01',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1519 弄'
-				}, {
-					date: '2016-05-03',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1516 弄'
-				}]
+        axios:this.$_api.realTime,
+        searchForm:{
+				  pageNum:1,
+          pageSize:20,
+        },
+				tableData: []
 			}
 		},
-        methods:{
+    provide () {
+      return {
+        axios:this.axios
+      }
+    },
 
-        }
+    activated(){
+      this.getTable()
+    },
+    methods:{
+		  getTable(flag){
+		    flag&&(this.searchForm.pageNum =1)
+		    this.axios.getRealTimePush({...this.searchForm}).then(res=>{
+		      this.tableData = res.data
+        })
+      },
+		  addOrEdit(data={},isEdit){
+		    this.$refs.addOrEditForm.openModal(data,isEdit)
+      },
+      remove(row){
+        this.axios.removeRealTimePush({id:row.id}).then(res=>{
+          this.$message.success('删除成功')
+          this.getTable()
+        })
+      }
+    }
 	}
 </script>
 
@@ -121,6 +125,9 @@
         .table-box{
             flex-grow: 1;
             height: 1px;
+          .custom-table{
+            height: calc(100% - 14px);
+          }
         }
     }
 

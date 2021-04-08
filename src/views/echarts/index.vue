@@ -5,6 +5,8 @@
       <el-button @click="preOne" :disabled="klineList.length<1||computeIndex==0" size="small" type="success">上一个</el-button>
       <el-button @click="nextOne" :disabled="klineList.length<1||computeIndex==klineList.length-1" size="small" type="success">下一个</el-button>
       <el-button @click="autoPlay" size="small" type="primary">{{playing?'播放开启':'播放暂定'}}</el-button>
+      <el-button type="success" size="small" @click="addRealTime">定制推送</el-button>
+
       <span style="color: #fff">
        <span style="padding: 0 5px 0 30px">
           趋势中
@@ -47,14 +49,17 @@
     </div>
     <div id="chart" class="echart" ></div>
     <div id="chart2" class="echart2"></div>
+    <real-time-modal ref="realTime"></real-time-modal>
   </div>
 </template>
 
 <script>
+  import realTimeModal from "@v/components/real-time-modal";
   const upColor = '#ec0000';
   const downColor = '#00da3c';
     export default {
         name: "index",
+      components: {realTimeModal},
       data(){
           return {
             echart:null,
@@ -71,30 +76,37 @@
       },
       methods:{
 
-
+        addRealTime(){
+          const data = {
+            share_code:this.klineList[this.computeIndex].code,
+            share_name:this.klineList[this.computeIndex].name,
+            user_id:1
+          }
+          this.$refs.realTime.openModal(data,false)
+        },
         goBack(){
           this.$router.go(-1)
         },
-   splitData(rawData) {
-      var categoryData = [];
-      var values = [];
-      var volumes = [];
-      const turnOver= []
-      for (var i = 0; i < rawData.length; i++) {
-        categoryData.push(rawData[i].splice(0, 1)[0]);
-        values.push(rawData[i]);
-        volumes.push([i, rawData[i][4], rawData[i][0] > rawData[i][1] ? 1 : -1]);
-        turnOver.push([i, rawData[i][6], rawData[i][0] > rawData[i][1] ? 1 : -1]);
-      }
-     return {
-        categoryData: categoryData,
-        values: values,
-        volumes: volumes,
-        turnOver
-      };
-    },
+       splitData(rawData) {
+          var categoryData = [];
+          var values = [];
+          var volumes = [];
+          const turnOver= []
+          for (var i = 0; i < rawData.length; i++) {
+            categoryData.push(rawData[i].splice(0, 1)[0]);
+            values.push(rawData[i]);
+            volumes.push([i, rawData[i][4], rawData[i][0] > rawData[i][1] ? 1 : -1]);
+            turnOver.push([i, rawData[i][6], rawData[i][0] > rawData[i][1] ? 1 : -1]);
+          }
+         return {
+            categoryData: categoryData,
+            values: values,
+            volumes: volumes,
+            turnOver
+          };
+        },
 
-     calculateMA(dayCount, data) {
+        calculateMA(dayCount, data) {
       var result = [];
       for (var i = 0, len = data.values.length; i < len; i++) {
         if (i < dayCount) {

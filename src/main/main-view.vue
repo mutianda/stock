@@ -1,6 +1,6 @@
 <template>
     <keep-alive>
-        <router-view class="router-view"><slot></slot></router-view>
+        <router-view class="router-view"></router-view>
     </keep-alive>
 </template>
 
