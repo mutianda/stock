@@ -21,7 +21,7 @@
       connect() {
         this.id = this.$socket.id
         console.log('连接成功')
-        this.$socket.emit('login', { userid: '111', username: 'sss' })
+        this.$socket.emit('login', { userid: '111', username: 'ssssss' })
         // 监听connect事件
       },
       login(data){
