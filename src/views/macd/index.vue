@@ -4,7 +4,7 @@
         <el-button type="danger" @click="getAllKLine('all')" v-loading="beReady">所有</el-button>
         <el-button type="danger" @click="getAllKLine('dbl')" v-loading="beReady">底背离</el-button>
         <el-button type="danger" @click="getAllKLine('lianban')" v-loading="beReady">连扳</el-button>
-        <el-button type="danger" @click="getAllKLine('chaobeili')" v-loading="beReady">超背离</el-button>
+        <el-button type="danger" @click="getAllKLine('chaodbl')" v-loading="beReady">超背离</el-button>
         <el-button type="danger" @click="goEchart" >查看k线图</el-button>
       </div>
 <!--      <div v-for="(item,index) in shareList">{{ (item.code[0]==6? '1':'0')+item.code}} </div>-->
