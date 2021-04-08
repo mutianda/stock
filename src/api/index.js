@@ -1,2 +1,3 @@
 import  common from './common'
-export default {common}
+import  realTime from './realTime'
+export default {common,realTime}

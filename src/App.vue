@@ -2,10 +2,7 @@
     <div class="page" id="app">
         <main-side class="main-side">
         </main-side>
-        <div v-for="item in dataList">{{item}}</div>
-        <main-view class="main-view">
-
-        </main-view>
+        <main-view class="main-view"></main-view>
     </div>
 </template>
 
@@ -17,11 +14,6 @@
 	export default {
 		name: "index",
 		components: {MainView,MainSide},
-        data(){
-			return {
-				dataList:[]
-            }
-        },
 		mounted(){
 			this.saveMenuRouter()
 		},
@@ -40,8 +32,7 @@
       },
       message(data) {     // 监听message事件，方法是后台定义和提供的
         console.log(data)
-          this.dataList.push(data.content)
-        // this.$message.success(data.content)
+        this.$message.info(data.content)
       },
     },
 		methods:{
@@ -84,7 +75,7 @@
 
         .main-view {
             flex-grow: 1;
-            padding: 14px;
+
             height: 100%;
         }
 
