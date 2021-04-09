@@ -1,6 +1,6 @@
 const menuRouter=[
       {
-          path: '/',
+          path: '/home',
           name: 'home',
           title:'首页',
           component: () => import('@v/home'),

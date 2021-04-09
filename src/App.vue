@@ -1,8 +1,9 @@
 <template>
-    <div class="page" id="app">
-        <main-side class="main-side">
+    <div class="page" id="app" @mousedown="mousedown" @mouseup="mouseup">
+        <main-side class="main-side" v-model="showMenu">
         </main-side>
-        <main-view class="main-view"></main-view>
+        <main-view class="main-view" ></main-view>
+        <websocket-modal v-model="showWsModal" :tableData ="tableData"></websocket-modal>
     </div>
 </template>
 
@@ -10,31 +11,48 @@
 	import MainSide from './main/main-side'
 	import MainView from "./main/main-view";
 	import {menuRouter} from "./router/router";
+	import WebsocketModal from '@v/components/websocket-modal'
 
 	export default {
 		name: "index",
-		components: {MainView,MainSide},
+		components: {MainView,MainSide,WebsocketModal},
+        data(){
+			return {
+				showWsModal:false,
+				tableData:[],
+                showMenu:false,
+                mouse:{
+				    begin:0,
+                    end:0
+                }
+            }
+        },
 		mounted(){
 			this.saveMenuRouter()
 		},
-    sockets: {
-      connect() {
-        this.id = this.$socket.id
-        console.log('连接成功')
-        this.$socket.emit('login', { userid: '111', username: 'ssssss' })
-        // 监听connect事件
-      },
-      login(data){
-        console.log(data)
-      },
-      logout(data){
-        console.log(data)
-      },
-      message(data) {     // 监听message事件，方法是后台定义和提供的
-        console.log(data)
-        this.$message.info(data.content)
-      },
-    },
+        sockets: {
+            connect() {
+                this.id = this.$socket.id
+                console.log('连接成功')
+                this.$socket.emit('login', { userid: '111', username: 'ssssss' })
+                // 监听connect事件
+            },
+            login(data){
+                console.log(data)
+            },
+            logout(data){
+                console.log(data)
+            },
+	        realTimeStock(data){
+                this.tableData = data
+		        this.showWsModal = true
+		        console.log('推送');
+	        },
+            message(data) {     // 监听message事件，方法是后台定义和提供的
+                console.log(data)
+                this.$message.info(data.content)
+            },
+        },
 		methods:{
 			saveMenuRouter(){
 				const list = menuRouter.map(item=> {
@@ -47,7 +65,20 @@
 				})
 				this.$router.addRoutes(list)
 				this.$store.commit('common/saveRouter', list)
-			}
+                this.$router.push({
+                    name:'home'
+                })
+			},
+            mousedown(e){
+			    this.mouse.begin = e.clientX
+                console.log(e);
+            },
+            mouseup(e){
+                this.mouse.end = e.clientX
+                if(this.mouse.end-this.mouse.begin>100){
+                    this.showMenu = true
+                }
+            }
 		},
 	}
 </script>
@@ -75,13 +106,9 @@
 
         .main-view {
             flex-grow: 1;
-
-            height: 100%;
-        }
-
-        .main-side {
-            width: 230px;
-            flex-shrink: 0;
+            padding: 10px;
+            box-sizing: border-box;
+            width: 100%;
             height: 100%;
         }
     }

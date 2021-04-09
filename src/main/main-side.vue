@@ -1,13 +1,21 @@
 <template>
+  <el-drawer
+          title=""
+          :visible="value"
+          :size="250"
+          direction="ltr"
+          :with-header="false"
+          @close="closeDraw"
+          >
     <div class="side">
       <el-menu
-        class="menu-box"
-        background-color="#020b21"
-        text-color="#fff"
-        router
-        :default-active="activeRouter"
-        @select="handleSelect"
-        active-text-color="#ffd04b">
+              class="menu-box"
+              background-color="#020b21"
+              text-color="#fff"
+              router
+              :default-active="activeRouter"
+              @select="handleSelect"
+              active-text-color="#ffd04b">
         <div v-for="(item,index) in menuList" :key="index">
           <el-submenu :index="item.name" v-if="item.children&&item.children.length"  class="menu-item">
             <template slot="title">
@@ -23,36 +31,46 @@
 
       </el-menu>
     </div>
+  </el-drawer>
+
 </template>
 
 <script>
-    export default {
-        name: "main-side",
-        data(){
-          return {
-          }
-
-      },
-      computed:{
-          menuList(){
-
-            return this.$store.state.common.routerList
-          },
-          activeRouter(){
-            return this.$route.name
-          }
-      },
-      mounted() {
-         console.log(this.menuList,this.$route.name);
-      },
-      methods:{
-          handleSelect(key, keyPath) {
-            console.log(this.$route);
-            this.$router.push({
-              name: key,
-            })
-          }
+  export default {
+    props:{
+      value:{
+        type:Boolean,
+        default:false
       }
+    },
+    data(){
+      return {
+      }
+
+    },
+    computed:{
+        menuList(){
+
+          return this.$store.state.common.routerList
+        },
+        activeRouter(){
+          return this.$route.name
+        }
+    },
+    mounted() {
+       console.log(this.menuList,this.$route.name);
+    },
+    methods:{
+      handleSelect(key, keyPath) {
+        console.log(this.$route);
+        this.$router.push({
+          name: key,
+        })
+      },
+      closeDraw(){
+          this.$emit('input',false)
+      }
+    }
     }
 </script>
 
