@@ -1,10 +1,10 @@
 <template>
     <div>
       <div>
-        <el-button type="danger" @click="getAllKLine('all')" v-loading="beReady">所有</el-button>
-        <el-button type="danger" @click="getAllKLine('dbl')" v-loading="beReady">底背离</el-button>
-        <el-button type="danger" @click="getAllKLine('lianban')" v-loading="beReady">连扳</el-button>
-        <el-button type="danger" @click="getAllKLine('chaodbl')" v-loading="beReady">超背离</el-button>
+        <el-button type="danger" @click="getAllKLine('all')" v-loading="beReady && currentType=='all'">所有</el-button>
+        <el-button type="danger" @click="getAllKLine('dbl')" v-loading="beReady && currentType=='dbl'">底背离</el-button>
+        <el-button type="danger" @click="getAllKLine('lianban')" v-loading="beReady && currentType=='lianban'">连扳</el-button>
+        <el-button type="danger" @click="getAllKLine('chaodbl')" v-loading="beReady  && currentType=='chaodbl'">超背离</el-button>
         <el-button type="danger" @click="goEchart" >查看k线图</el-button>
       </div>
 <!--      <div v-for="(item,index) in shareList">{{ (item.code[0]==6? '1':'0')+item.code}} </div>-->
@@ -102,7 +102,6 @@
           this.beReady = true
           // this.beReady= false
           this.axios.common.getAllKLine({type}).then(res => {
-            this.beReady = false
             this.dblList=res.data.map(item=>{
               console.log(item.code )
               item.qs=true
@@ -113,7 +112,10 @@
               return item
             })
             console.log('计算完成')
-            })
+            }).finally(()=>{
+            this.beReady = false
+
+          })
         },
 
 

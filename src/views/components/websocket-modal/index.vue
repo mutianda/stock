@@ -1,73 +1,90 @@
 <template>
-    <el-dialog title="实时推送" :visible="value" width="800px" @close="closeModal">
-        <div class="modal-view">
-            <el-table
-                    :data="tableData"
-                    style="width: 100%">
-                <el-table-column
-                        prop="f58"
-                        label="名称"
-                        align="center"
-                        min-width="100">
-                </el-table-column>
-                <el-table-column
-                        prop="f57"
-                        label="代码"
-                        align="center"
-                        min-width="100"
-                        width="180">
-                </el-table-column>
-                <el-table-column
-                        prop="f43"
-                        align="center"
-                        min-width="100"
-                        label="股价">
-                </el-table-column>
-                <el-table-column
-                        prop="f170"
-                        align="center"
-                        min-width="100"
-                        label="涨幅">
-                </el-table-column>
-                <el-table-column
-                        prop="f168"
-                        align="center"
-                        min-width="100"
-                        label="换手">
-                </el-table-column>
-            </el-table>
-        </div>
-    </el-dialog>
+  <div class="modal-view">
+    <div class="info-box">
+      <el-timeline>
+        <el-timeline-item
+          :timestamp="item.f58"
+          :hide-timestamp="true"
+          placement="top"
+          v-for="(item, index) in [
+            ...tableData,
+            ...tableData,
+            ...tableData,
+            ...tableData,
+            ...tableData
+          ]"
+          :key="index"
+        >
+          <el-card class="item-card">
+            <div
+              class="item-desc"
+              :style="{ color: item.pushType == 'up' ? 'red' : 'green' }"
+            >
+              {{ item.desc }}
+            </div>
+            <div class="item-detail">
+              <div :style="{ color: item.pushType == 'up' ? 'red' : 'green' }">
+                名称:{{ item.f58 }}
+              </div>
+              <div>股价：{{ item.f43 }}</div>
+              <div>突破位：{{ item.price_rise }}</div>
+              <div>涨幅：{{ item.f170 }}</div>
+              <div>换手：{{ item.f168 }}</div>
+              <div>跌破位：{{ item.price_down }}</div>
+            </div>
+          </el-card>
+        </el-timeline-item>
+      </el-timeline>
+    </div>
+    <slot name="btn"></slot>
+  </div>
 </template>
 
 <script>
-	export default {
-		name: "addOrEditModal",
-        props:{
-			value:{
-				type:Boolean,
-                default:false
-            },
-            tableData:{
-				type:Array,
-                default: []
-            }
-        },
+export default {
+  name: "addOrEditModal",
+  props: {
+    tableData: {
+      type: Array,
+      default: []
+    }
+  },
 
-		data(){
-			return {
-
-			}
-		},
-		methods:{
-			closeModal(){
-				this.$emit('input',false)
-            }
-
-		}
-	}
+  data() {
+    return {};
+  },
+  methods: {}
+};
 </script>
 
-<style scoped>
-
+<style scoped lang="less">
+.modal-view {
+  .info-box {
+    width: 470px;
+    margin-left: 20px;
+    max-height: 500px;
+    text-align: center;
+    overflow-y: auto;
+    /deep/.el-card__body {
+      width: 100%;
+      display: flex;
+      padding: 5px;
+      align-items: center;
+      justify-items: center;
+      .item-desc {
+        width: 80px;
+        font-size: 18px;
+      }
+      .item-detail {
+        flex: 1;
+        display: flex;
+        text-align: left;
+        flex-wrap: wrap;
+        div {
+          width: 100px;
+        }
+      }
+    }
+  }
+}
 </style>
