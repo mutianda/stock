@@ -3,14 +3,15 @@
     <main-side class="main-side" v-model="showMenu"> </main-side>
     <main-view class="main-view"></main-view>
     <websocket-modal
+            draggable="true"
       class="ws-modal"
-      :class="{ 'show-modal': showWsModal }"
+      :class="{ 'show-modal': showWsModal||!tableData.length }"
       :tableData="tableData"
     >
-      <div class="handle-btn" slot="btn">
+      <div class="handle-btn" slot="btn"  @click="closeModal">
         <i
-          :class="showWsModal ? 'el-icon-arrow-left' : 'el-icon-arrow-right'"
-          @click="closeModal"
+          :class="showWsModal||!tableData.length ? 'el-icon-arrow-left' : 'el-icon-arrow-right'"
+
         ></i>
       </div>
     </websocket-modal>
@@ -56,6 +57,10 @@ export default {
     realTimeStock(data) {
       this.tableData = data;
       this.showWsModal = true;
+      const timer = setTimeout(()=>{
+        this.showWsModal = false;
+        clearTimeout(timer)
+      },20000)
       console.log("推送");
     },
     message(data) {
@@ -102,7 +107,6 @@ export default {
 body {
   margin: 0;
   height: 100vh;
-  background-color: #111;
 }
 #app {
   height: 100%;
@@ -129,10 +133,9 @@ body {
     position: fixed;
     right: 0;
     bottom: 0;
-    height: 500px;
+    height: 200px;
     width: 500px;
     z-index: 999;
-
     animation: all ease 0.2s;
     overflow-x: hidden;
     transition: transform 2s;
@@ -143,6 +146,8 @@ body {
       position: absolute;
       left: 1px;
       cursor: pointer;
+      height: 50px;
+      line-height: 50px;
       color: #fff;
       font-size: 20px;
       top: 50%;

@@ -4,26 +4,26 @@
             <div class="search-item">
                 <div class="item-label">名称</div>
                 <div class="item-input">
-                    <el-input v-model="stockName"></el-input>
+                    <el-input v-model="stockName" size="mini"></el-input>
                 </div>
             </div>
             <div class="search-item">
                 <div class="item-label">名称</div>
                 <div class="item-input">
-                    <el-input v-model="stockName"></el-input>
+                    <el-input v-model="stockName" size="mini"></el-input>
                 </div>
             </div>
             <div class="search-item">
                 <div class="item-label">名称</div>
                 <div class="item-input">
-                    <el-input v-model="stockName"></el-input>
+                    <el-input v-model="stockName" size="mini"></el-input>
                 </div>
             </div>
 
 
             <div class="search-item">
-                <el-button type="primary" @click="getTable(true)">查询</el-button>
-                <el-button type="success" @click="addOrEdit({},false)">新增</el-button>
+                <el-button type="primary" @click="getTable(true)" size="mini">查询</el-button>
+                <el-button type="success" @click="addOrEdit({},false)" size="mini">新增</el-button>
 
 
             </div>
@@ -63,8 +63,8 @@
               <el-table-column
                 label="操作">
                 <template slot-scope='{row}'>
-                  <el-button @click="addOrEdit(row,true)" type="warning" size="small">编辑</el-button>
-                  <el-button @click="remove(row)" type="danger" size="small">删除</el-button>
+                  <el-button @click="addOrEdit(row,true)" type="warning" size="mini">编辑</el-button>
+                  <el-button @click="remove(row)" type="danger" size="mini">删除</el-button>
                 </template>
               </el-table-column>
             </el-table>

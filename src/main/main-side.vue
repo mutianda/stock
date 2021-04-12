@@ -79,7 +79,6 @@
     border: none;
   }
   .side{
-    background-color: #fff;
     height: 100%;
     .menu-box{
       height: 100%;

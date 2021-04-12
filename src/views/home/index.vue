@@ -1,7 +1,7 @@
 <template>
     <div class="home-page">
-        <el-button @click="login" type="primary"> 登录</el-button>
-        <el-button @click="sendMsg" type="primary"> 发消息</el-button>
+<!--        <el-button @click="login" type="primary"> 登录</el-button>-->
+<!--        <el-button @click="sendMsg" type="primary"> 发消息</el-button>-->
     </div>
 </template>
 

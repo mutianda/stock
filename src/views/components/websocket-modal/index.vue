@@ -6,13 +6,7 @@
           :timestamp="item.f58"
           :hide-timestamp="true"
           placement="top"
-          v-for="(item, index) in [
-            ...tableData,
-            ...tableData,
-            ...tableData,
-            ...tableData,
-            ...tableData
-          ]"
+          v-for="(item, index) in tableData"
           :key="index"
         >
           <el-card class="item-card">
@@ -24,13 +18,13 @@
             </div>
             <div class="item-detail">
               <div :style="{ color: item.pushType == 'up' ? 'red' : 'green' }">
-                名称:{{ item.f58 }}
+                name:{{ item.f58 }}
               </div>
-              <div>股价：{{ item.f43 }}</div>
-              <div>突破位：{{ item.price_rise }}</div>
-              <div>涨幅：{{ item.f170 }}</div>
-              <div>换手：{{ item.f168 }}</div>
-              <div>跌破位：{{ item.price_down }}</div>
+              <div>price：{{ item.f43 }}</div>
+              <div>up：{{ item.price_rise }}</div>
+              <div>percent：{{ item.f170 }}%</div>
+              <div>turn-hand：{{ item.f168 }}%</div>
+              <div>down：{{ item.price_down }}</div>
             </div>
           </el-card>
         </el-timeline-item>
@@ -62,15 +56,17 @@ export default {
   .info-box {
     width: 470px;
     margin-left: 20px;
-    max-height: 500px;
+    max-height: 300px;
     text-align: center;
     overflow-y: auto;
+    -webkit-app-region: drag;
     /deep/.el-card__body {
       width: 100%;
       display: flex;
       padding: 5px;
       align-items: center;
       justify-items: center;
+      opacity: .5;
       .item-desc {
         width: 80px;
         font-size: 18px;
