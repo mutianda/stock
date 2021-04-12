@@ -66,7 +66,7 @@ export default {
       padding: 5px;
       align-items: center;
       justify-items: center;
-      opacity: .5;
+      opacity: 0.5;
       .item-desc {
         width: 80px;
         font-size: 18px;

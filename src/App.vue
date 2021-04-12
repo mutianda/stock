@@ -3,15 +3,18 @@
     <main-side class="main-side" v-model="showMenu"> </main-side>
     <main-view class="main-view"></main-view>
     <websocket-modal
-            draggable="true"
+      draggable="true"
       class="ws-modal"
-      :class="{ 'show-modal': showWsModal||!tableData.length }"
+      :class="{ 'show-modal': showWsModal || !tableData.length }"
       :tableData="tableData"
     >
-      <div class="handle-btn" slot="btn"  @click="closeModal">
+      <div class="handle-btn" slot="btn" @click="closeModal">
         <i
-          :class="showWsModal||!tableData.length ? 'el-icon-arrow-left' : 'el-icon-arrow-right'"
-
+          :class="
+            showWsModal || !tableData.length
+              ? 'el-icon-arrow-left'
+              : 'el-icon-arrow-right'
+          "
         ></i>
       </div>
     </websocket-modal>
@@ -57,10 +60,10 @@ export default {
     realTimeStock(data) {
       this.tableData = data;
       this.showWsModal = true;
-      const timer = setTimeout(()=>{
+      const timer = setTimeout(() => {
         this.showWsModal = false;
-        clearTimeout(timer)
-      },20000)
+        clearTimeout(timer);
+      }, 20000);
       console.log("推送");
     },
     message(data) {
