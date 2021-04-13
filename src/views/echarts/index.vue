@@ -22,6 +22,9 @@
       <el-button type="success" size="small" @click="addRealTime"
         >定制推送</el-button
       >
+      <el-button type="success" size="small" @click="computedEchart(klineList[computeIndex]);"
+      >刷新</el-button
+      >
 
       <span style="color: #fff">
         <span style="padding: 0 5px 0 30px">
@@ -588,6 +591,10 @@ export default {
       this.computeIndex = index;
       // console.log(kline);
       this.computedEchart(kline[index]);
+      window.addEventListener('resize',  ()=> {
+        this.echart.resize()
+        this.echart2.resize()
+      });
     }
   },
   mounted() {}
