@@ -15,6 +15,7 @@ const menuRouter=[
         path:'/echarts',
         name:'echarts',
         title: '日线图',
+          hidePage:true,
         component: () => import('@v/echarts'),
       },
       {
