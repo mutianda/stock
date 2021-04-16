@@ -581,6 +581,7 @@ export default {
       document.getElementById("chart2"),
       "dark"
     );
+
     const kline = this.$route.params.kline;
     const index = this.$route.params.index || 0;
     if (kline) {
@@ -588,6 +589,10 @@ export default {
       this.computeIndex = index;
       // console.log(kline);
       this.computedEchart(kline[index]);
+      window.addEventListener("resize", () => {
+        this.echart.resize();
+        this.echart2.resize();
+      });
     }
   },
   mounted() {}
