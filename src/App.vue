@@ -18,6 +18,7 @@
         ></i>
       </div>
     </websocket-modal>
+    <a href="https://beian.miit.gov.cn/" class="beian">苏ICP备2021017546号</a>
   </div>
 </template>
 
@@ -123,14 +124,23 @@ body {
 <style lang="less" scoped>
 .page {
   width: 100%;
-  height: 100%;
+  height: 100vh;
   display: flex;
+  position: relative;
+  overflow: hidden;
   .main-view {
     flex-grow: 1;
     padding: 10px;
     box-sizing: border-box;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 30px);
+    overflow-y: auto;
+  }
+  .beian{
+    position: absolute;
+    bottom:1px;
+    left: 50%;
+    font-size: 16px;
   }
   .ws-modal {
     position: fixed;

@@ -51,7 +51,7 @@ export default {
   },
   computed: {
     menuList() {
-      return this.$store.state.common.routerList;
+      return this.$store.state.common.routerList.filter(item=>!item.hidePage);
     },
     activeRouter() {
       return this.$route.name;

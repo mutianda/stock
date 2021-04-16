@@ -1,29 +1,38 @@
 <template>
   <div class="echarts-box">
-    <div v-if="klineList.length" style="margin: 10px auto">
-      <el-button @click="goBack" size="small" type="info">返回</el-button>
-      <el-button
-        @click="preOne"
-        :disabled="klineList.length < 1 || computeIndex == 0"
-        size="small"
-        type="success"
+    <coolModal :show.sync="showModal" title="操作" width="40%">
+      <div v-if="klineList.length">
+        <el-button
+                @click="preOne"
+                :disabled="klineList.length < 1 || computeIndex == 0"
+                size="small"
+                type="success"
         >上一个</el-button
-      >
-      <el-button
-        @click="nextOne"
-        :disabled="klineList.length < 1 || computeIndex == klineList.length - 1"
-        size="small"
-        type="success"
+        >
+        <el-button
+                @click="nextOne"
+                :disabled="klineList.length < 1 || computeIndex == klineList.length - 1"
+                size="small"
+                type="success"
         >下一个</el-button
-      >
-      <el-button @click="autoPlay" size="small" type="primary">{{
-        playing ? "播放开启" : "播放暂定"
-      }}</el-button>
-      <el-button type="success" size="small" @click="addRealTime"
+        >
+        <el-button @click="autoPlay" size="small" type="primary">{{
+          playing ? "播放开启" : "播放暂定"
+          }}</el-button>
+        <el-button type="success" size="small" @click="addRealTime"
         >定制推送</el-button
-      >
-
-      <span style="color: #fff">
+        >
+        <el-button type="success" size="small" @click="computedEchart(klineList[computeIndex]);"
+        >刷新</el-button
+        >
+        <el-button
+                @click="markTxt"
+                size="small"
+                style="margin-left: 20px"
+                type="warning"
+        >生成txt</el-button
+        >
+        <div style="color: #111">
         <span style="padding: 0 5px 0 30px">
           趋势中
         </span>
@@ -44,20 +53,18 @@
           背离开始
         </span>
         <el-switch v-model="klineList[computeIndex].kaishi"> </el-switch>
-      </span>
-      <el-button
-        @click="markTxt"
-        size="small"
-        style="margin-left: 20px"
-        type="warning"
-        >生成txt</el-button
-      >
-      <span v-if="klineList.length" style="float: right;color: #fff"
-        >总共：{{ klineList.length }} 当前：{{ computeIndex + 1 }} 代码：{{
-          klineList[computeIndex].code
-        }}
+      </div>
+
+        <span v-if="klineList.length" style="float: left;color: #111;line-height: 50px"
+        >总共：{{ klineList.length }} 当前：{{ computeIndex + 1 }} 代码：{{klineList[computeIndex].code}}
         名称：{{ klineList[computeIndex].name }}</span
-      >
+        >
+      </div>
+
+    </coolModal>
+    <div  style="margin: 10px auto">
+      <el-button @click="goBack" size="small" type="info">Back</el-button>
+      <el-button @click="showModal=true" size="small" type="primary">Open</el-button>
     </div>
     <div id="chart" class="echart"></div>
     <div id="chart2" class="echart2"></div>
@@ -79,7 +86,8 @@ export default {
       computeIndex: 0,
       echart2: null,
       playing: true,
-      time: null
+      time: null,
+      showModal:false
     };
   },
   computed: {},
@@ -581,7 +589,6 @@ export default {
       document.getElementById("chart2"),
       "dark"
     );
-
     const kline = this.$route.params.kline;
     const index = this.$route.params.index || 0;
     if (kline) {

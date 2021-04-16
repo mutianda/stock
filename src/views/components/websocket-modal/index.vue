@@ -68,7 +68,7 @@ export default {
       justify-items: center;
       opacity: 0.5;
       .item-desc {
-        width: 80px;
+        width: 50px;
         font-size: 18px;
       }
       .item-detail {

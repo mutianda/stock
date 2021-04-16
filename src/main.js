@@ -21,7 +21,8 @@ import * as echarts from 'echarts'
 Vue.prototype.$echarts = echarts
 
 import './assets/styles/common.less'
-
+import components from '@c'
+Vue.use(components)
 
 Vue.use(new VueSocketio({
   debug: true,
