@@ -30,7 +30,13 @@
       </div>
     </div>
     <div class="table-box">
-      <el-table :data="tableData" stripe class="custom-table" height="100%" :border="true">
+      <el-table
+        :data="tableData"
+        stripe
+        class="custom-table"
+        height="100%"
+        :border="true"
+      >
         <el-table-column prop="share_code" label="股票编码" width="180">
         </el-table-column>
         <el-table-column prop="share_name" label="股票名称" width="180">
@@ -104,10 +110,10 @@ export default {
 .real-time {
   display: flex;
   flex-direction: column;
-  .search-bar{
+  .search-bar {
     color: #555;
   }
-  .table-box{
+  .table-box {
     height: calc(100% - 70px);
   }
 }

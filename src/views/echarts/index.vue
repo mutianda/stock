@@ -3,68 +3,78 @@
     <coolModal :show.sync="showModal" title="操作" width="40%">
       <div v-if="klineList.length">
         <el-button
-                @click="preOne"
-                :disabled="klineList.length < 1 || computeIndex == 0"
-                size="small"
-                type="success"
-        >上一个</el-button
+          @click="preOne"
+          :disabled="klineList.length < 1 || computeIndex == 0"
+          size="small"
+          type="success"
+          >上一个</el-button
         >
         <el-button
-                @click="nextOne"
-                :disabled="klineList.length < 1 || computeIndex == klineList.length - 1"
-                size="small"
-                type="success"
-        >下一个</el-button
+          @click="nextOne"
+          :disabled="
+            klineList.length < 1 || computeIndex == klineList.length - 1
+          "
+          size="small"
+          type="success"
+          >下一个</el-button
         >
         <el-button @click="autoPlay" size="small" type="primary">{{
           playing ? "播放开启" : "播放暂定"
-          }}</el-button>
+        }}</el-button>
         <el-button type="success" size="small" @click="addRealTime"
-        >定制推送</el-button
-        >
-        <el-button type="success" size="small" @click="computedEchart(klineList[computeIndex]);"
-        >刷新</el-button
+          >定制推送</el-button
         >
         <el-button
-                @click="markTxt"
-                size="small"
-                style="margin-left: 20px"
-                type="warning"
-        >生成txt</el-button
+          type="success"
+          size="small"
+          @click="computedEchart(klineList[computeIndex])"
+          >刷新</el-button
+        >
+        <el-button
+          @click="markTxt"
+          size="small"
+          style="margin-left: 20px"
+          type="warning"
+          >生成txt</el-button
         >
         <div style="color: #111">
-        <span style="padding: 0 5px 0 30px">
-          趋势中
-        </span>
-        <el-switch v-model="klineList[computeIndex].qs"> </el-switch>
-        <span style="padding: 0 5px 0 30px">
-          底部启动
-        </span>
-        <el-switch v-model="klineList[computeIndex].dbqd"> </el-switch>
-        <span style="padding: 0 5px 0 30px">
-          突破中枢
-        </span>
-        <el-switch v-model="klineList[computeIndex].tpzd"> </el-switch>
-        <span style="padding: 0 5px 0 30px">
-          加速中
-        </span>
-        <el-switch v-model="klineList[computeIndex].jiasu"> </el-switch>
-        <span style="padding: 0 5px 0 30px">
-          背离开始
-        </span>
-        <el-switch v-model="klineList[computeIndex].kaishi"> </el-switch>
-      </div>
+          <span style="padding: 0 5px 0 30px">
+            趋势中
+          </span>
+          <el-switch v-model="klineList[computeIndex].qs"> </el-switch>
+          <span style="padding: 0 5px 0 30px">
+            底部启动
+          </span>
+          <el-switch v-model="klineList[computeIndex].dbqd"> </el-switch>
+          <span style="padding: 0 5px 0 30px">
+            突破中枢
+          </span>
+          <el-switch v-model="klineList[computeIndex].tpzd"> </el-switch>
+          <span style="padding: 0 5px 0 30px">
+            加速中
+          </span>
+          <el-switch v-model="klineList[computeIndex].jiasu"> </el-switch>
+          <span style="padding: 0 5px 0 30px">
+            背离开始
+          </span>
+          <el-switch v-model="klineList[computeIndex].kaishi"> </el-switch>
+        </div>
 
-        <span v-if="klineList.length" style="float: left;color: #111;line-height: 50px"
-        >总共：{{ klineList.length }} 当前：{{ computeIndex + 1 }} 代码：{{klineList[computeIndex].code}}
-        名称：{{ klineList[computeIndex].name }}</span
+        <span
+          v-if="klineList.length"
+          style="float: left;color: #111;line-height: 50px"
+          >总共：{{ klineList.length }} 当前：{{ computeIndex + 1 }} 代码：{{
+            klineList[computeIndex].code
+          }}
+          名称：{{ klineList[computeIndex].name }}</span
         >
       </div>
-
     </coolModal>
-    <div  style="margin: 10px auto">
+    <div style="margin: 10px auto">
       <el-button @click="goBack" size="small" type="info">Back</el-button>
-      <el-button @click="showModal=true" size="small" type="primary">Open</el-button>
+      <el-button @click="showModal = true" size="small" type="primary"
+        >Open</el-button
+      >
     </div>
     <div id="chart" class="echart"></div>
     <div id="chart2" class="echart2"></div>
@@ -87,7 +97,7 @@ export default {
       echart2: null,
       playing: true,
       time: null,
-      showModal:false
+      showModal: false
     };
   },
   computed: {},

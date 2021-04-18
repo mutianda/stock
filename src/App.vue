@@ -86,7 +86,7 @@ export default {
       this.$router.addRoutes(list);
       this.$store.commit("common/saveRouter", list);
       this.$router.push({
-        name: "home"
+        name: "macd"
       });
     },
     mousedown(e) {
@@ -136,9 +136,9 @@ body {
     height: calc(100% - 30px);
     overflow-y: auto;
   }
-  .beian{
+  .beian {
     position: absolute;
-    bottom:1px;
+    bottom: 1px;
     left: 50%;
     font-size: 16px;
   }
