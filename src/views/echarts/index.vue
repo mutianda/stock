@@ -21,6 +21,7 @@
         <el-button @click="autoPlay" size="small" type="primary">{{
           playing ? "播放开启" : "播放暂定"
         }}</el-button>
+        <el-slider v-model="timeLength" show-input> </el-slider>
         <el-button type="success" size="small" @click="addRealTime"
           >定制推送</el-button
         >
@@ -97,7 +98,8 @@ export default {
       echart2: null,
       playing: true,
       time: null,
-      showModal: false
+      showModal: false,
+      timeLength: 15
     };
   },
   computed: {},
@@ -502,7 +504,6 @@ export default {
     openAddRealTimePush(start = 0, end = 1) {
       let price_rise = 0,
         price_down = 0;
-      console.log(this.klineList[this.computeIndex].kline);
       for (let i = start; i < end + 1; i++) {
         const item = this.klineList[this.computeIndex].kline[i];
 
@@ -536,7 +537,7 @@ export default {
       if (!this.playing) {
         this.time = setInterval(() => {
           this.nextOne();
-        }, 10000);
+        }, this.timeLength * 1000);
       } else {
         clearInterval(this.time);
         this.time = null;

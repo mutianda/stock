@@ -14,10 +14,10 @@
         >底背离</el-button
       >
       <el-button
-              type="danger"
-              @click="getAllKLine('chudbl')"
-              v-loading="beReady && currentType == 'chudbl'"
-      >初底背离</el-button
+        type="danger"
+        @click="getAllKLine('chudbl')"
+        v-loading="beReady && currentType == 'chudbl'"
+        >初底背离</el-button
       >
       <el-button
         type="danger"
@@ -39,14 +39,14 @@
       >
       <el-button type="danger" @click="goEchart">查看k线图</el-button>
       <el-pagination
-              style="display: inline-block"
-              :current-page.sync ="searchForm.pageNum"
-              :page-size.sync="searchForm.pageSize"
-              layout="total, sizes, prev, pager, next, jumper"
-              @size-change="changeSize"
-              :page-sizes="[50, 100, 200, 400]"
-              @current-change="changeNum"
-              :total="searchForm.total"
+        style="display: inline-block"
+        :current-page.sync="searchForm.pageNum"
+        :page-size.sync="searchForm.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        @size-change="changeSize"
+        :page-sizes="[50, 100, 200, 400]"
+        @current-change="changeNum"
+        :total="searchForm.total"
       >
       </el-pagination>
     </div>
@@ -93,12 +93,12 @@ export default {
       macdList: [],
       dblList: [],
       beReady: false,
-      searchForm:{
-        pageSize:100,
-        pageNum:1,
-        total:0
+      searchForm: {
+        pageSize: 100,
+        pageNum: 1,
+        total: 0
       },
-      currentType: "",
+      currentType: ""
     };
   },
   mounted() {},
@@ -120,11 +120,11 @@ export default {
     }
   },
   methods: {
-    changeSize(size){
-      this.getAllKLine(this.currentType)
+    changeSize(size) {
+      this.getAllKLine(this.currentType);
     },
-    changeNum(Num){
-      this.getAllKLine(this.currentType)
+    changeNum(Num) {
+      this.getAllKLine(this.currentType);
     },
     goEchart() {
       this.$router.push({
@@ -150,9 +150,13 @@ export default {
       this.beReady = true;
       // this.beReady= false
       this.axios.common
-        .getAllKLine({ type,pageSize:this.searchForm.pageSize,pageNum:this.searchForm.pageNum })
+        .getAllKLine({
+          type,
+          pageSize: this.searchForm.pageSize,
+          pageNum: this.searchForm.pageNum
+        })
         .then(res => {
-          if(res.data){
+          if (res.data) {
             this.dblList = res.data.list.map(item => {
               item.qs = true;
               item.dbqd = false;
@@ -163,10 +167,9 @@ export default {
             });
             console.log("计算完成");
           }
-          this.searchForm.pageNum = res.data.pageNum
-          this.searchForm.pageSize = res.data.pageSize
-          this.searchForm.total = res.data.total
-
+          this.searchForm.pageNum = res.data.pageNum;
+          this.searchForm.pageSize = res.data.pageSize;
+          this.searchForm.total = res.data.total;
         })
         .finally(() => {
           this.beReady = false;

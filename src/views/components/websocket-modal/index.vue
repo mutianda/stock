@@ -14,6 +14,11 @@
               class="item-desc"
               :style="{ color: item.pushType == 'up' ? 'red' : 'green' }"
             >
+              <i
+                class="el-icon-delete"
+                style="cursor: pointer"
+                @click="removeRealTimePush(item)"
+              ></i>
               {{ item.desc }}
             </div>
             <div class="item-detail">
@@ -47,7 +52,11 @@ export default {
   data() {
     return {};
   },
-  methods: {}
+  methods: {
+    removeRealTimePush(item) {
+      this.$_api.realTime.removeRealTimePush({ id: item.id }).then(res => {});
+    }
+  }
 };
 </script>
 
