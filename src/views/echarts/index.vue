@@ -648,7 +648,6 @@ export default {
   width: 100%;
   height: 95vh;
   background-color: black;
-  opacity: .1;
 }
 .echart {
   width: 100%;
