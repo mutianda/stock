@@ -1,7 +1,12 @@
 <template>
   <div>
     <div>
-      <a href="http://onlinestock.cn/txt/qs.txt" download="qs.txt" style="color: red">下载</a>
+      <a
+        href="http://onlinestock.cn/txt/qs.txt"
+        download="qs.txt"
+        style="color: red"
+        >下载</a
+      >
       <el-button
         type="danger"
         @click="getAllKLine('all')"
@@ -28,17 +33,22 @@
       >
       <el-button
         type="danger"
-        @click="getAllKLine('lianban-3')"
-        v-loading="beReady && currentType == 'lianban-3'"
-        >所有连扳</el-button
-      >
+        @click="getAllKLine('lianban-' + lianbanLength)"
+        v-loading="beReady && currentType.indexOf('lianban-3') > -1"
+        >所有连扳
+      </el-button>
       <el-button
         type="danger"
         @click="getAllKLine('chaodbl')"
         v-loading="beReady && currentType == 'chaodbl'"
         >超背离</el-button
       >
-      <el-button type="danger" @click="goEchart">查看k线图</el-button>
+      <el-input-number
+        v-model="lianbanLength"
+        :min="1"
+        :max="10"
+        label=""
+      ></el-input-number>
       <el-pagination
         style="display: inline-block"
         :current-page.sync="searchForm.pageNum"
@@ -99,7 +109,8 @@ export default {
         pageNum: 1,
         total: 0
       },
-      currentType: ""
+      currentType: "",
+      lianbanLength: 3
     };
   },
   mounted() {},
@@ -116,7 +127,7 @@ export default {
 
           return item;
         });
-      console.log(arr);
+
       return arr;
     }
   },

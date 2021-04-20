@@ -1,6 +1,12 @@
 <template>
-  <div class="page" id="app" @mousedown="mousedown" @mouseup="mouseup" @touchstart="mousedown"
-       @touchend="mouseup">
+  <div
+    class="page"
+    id="app"
+    @mousedown="mousedown"
+    @mouseup="mouseup"
+    @touchstart="mousedown"
+    @touchend="mouseup"
+  >
     <main-side class="main-side" v-model="showMenu"> </main-side>
     <main-view class="main-view"></main-view>
     <websocket-modal
@@ -49,16 +55,11 @@ export default {
   sockets: {
     connect() {
       this.id = this.$socket.id;
-      console.log("连接成功");
+
       this.$socket.emit("login", { userid: "111", username: "ssssss" });
       // 监听connect事件
     },
-    login(data) {
-      console.log(data);
-    },
-    logout(data) {
-      console.log(data);
-    },
+
     realTimeStock(data) {
       this.tableData = data;
       this.showWsModal = true;
@@ -70,7 +71,7 @@ export default {
     },
     message(data) {
       // 监听message事件，方法是后台定义和提供的
-      console.log(data);
+
       this.$message.info(data.content);
     }
   },
@@ -91,28 +92,25 @@ export default {
       });
     },
     mousedown(e) {
-      if(e.type=='touchstart'){
-        const ev = e.changedTouches[0]
+      if (e.type == "touchstart") {
+        const ev = e.changedTouches[0];
         this.mouse.begin = ev.screenX;
       }
-      if(e.type=='mousedown'){
+      if (e.type == "mousedown") {
         if (e.clientY > 200) return;
         this.mouse.begin = e.clientX;
       }
-
-
     },
     mouseup(e) {
-      console.log(e);
-      if(e.type=='touchend'){
-        const ev = e.changedTouches[0]
-        if (!ev||ev.screenY > 200) return;
+      if (e.type == "touchend") {
+        const ev = e.changedTouches[0];
+        if (!ev || ev.screenY > 200) return;
         this.mouse.end = ev.screenX;
         if (this.mouse.end - this.mouse.begin > 100) {
           this.showMenu = true;
         }
       }
-      if(e.type=='mouseup'){
+      if (e.type == "mouseup") {
         if (e.clientY > 200) return;
         this.mouse.end = e.clientX;
         if (this.mouse.end - this.mouse.begin > 100) {

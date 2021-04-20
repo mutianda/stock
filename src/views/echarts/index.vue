@@ -71,31 +71,29 @@
         >
       </div>
     </coolModal>
-    <div style="margin: 10px auto">
+    <div style="margin: 10px auto" v-if="klineList.length">
       <el-button @click="goBack" size="small" type="info">Back</el-button>
       <el-button @click="showModal = true" size="small" type="primary"
         >Open</el-button
       >
       <el-button
-              @click="preOne"
-              :disabled="klineList.length < 1 || computeIndex == 0"
-              size="small"
-              type="success"
-      >pre</el-button
+        @click="preOne"
+        :disabled="klineList.length < 1 || computeIndex == 0"
+        size="small"
+        type="success"
+        >pre</el-button
       >
       <el-button
-              @click="nextOne"
-              :disabled="
-            klineList.length < 1 || computeIndex == klineList.length - 1
-          "
-              size="small"
-              type="success"
-      >next</el-button
+        @click="nextOne"
+        :disabled="klineList.length < 1 || computeIndex == klineList.length - 1"
+        size="small"
+        type="success"
+        >next</el-button
       >
       <el-button @click="autoPlay" size="small" type="primary">{{
         playing ? "start" : "stop"
-        }}</el-button>
-
+      }}</el-button>
+      {{ klineList[computeIndex].lianban || "" }}
     </div>
     <div id="chart" class="echart"></div>
     <div id="chart2" class="echart2"></div>
