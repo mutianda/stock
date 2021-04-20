@@ -38,7 +38,7 @@
           type="warning"
           >生成txt</el-button
         >
-        <div style="color: #111">
+        <div style="color: #111;padding:10px 10px">
           <span style="padding: 0 5px 0 30px">
             趋势中
           </span>
@@ -63,7 +63,7 @@
 
         <span
           v-if="klineList.length"
-          style="float: left;color: #111;line-height: 50px"
+          style="float: left;color: #111;line-height: 50px;"
           >总共：{{ klineList.length }} 当前：{{ computeIndex + 1 }} 代码：{{
             klineList[computeIndex].code
           }}
@@ -76,6 +76,26 @@
       <el-button @click="showModal = true" size="small" type="primary"
         >Open</el-button
       >
+      <el-button
+              @click="preOne"
+              :disabled="klineList.length < 1 || computeIndex == 0"
+              size="small"
+              type="success"
+      >pre</el-button
+      >
+      <el-button
+              @click="nextOne"
+              :disabled="
+            klineList.length < 1 || computeIndex == klineList.length - 1
+          "
+              size="small"
+              type="success"
+      >next</el-button
+      >
+      <el-button @click="autoPlay" size="small" type="primary">{{
+        playing ? "start" : "stop"
+        }}</el-button>
+
     </div>
     <div id="chart" class="echart"></div>
     <div id="chart2" class="echart2"></div>
@@ -628,6 +648,7 @@ export default {
   width: 100%;
   height: 95vh;
   background-color: black;
+  opacity: .1;
 }
 .echart {
   width: 100%;

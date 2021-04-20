@@ -5,6 +5,8 @@
       :style="modalStyle"
       @dragstart="handleMoveStart"
       draggable="true"
+      @touchstart="mousedown"
+      @touchend="mouseup"
       @dragend="handleMoveEnd"
     >
       <div :class="[prefixCls + 'header']">
@@ -82,7 +84,6 @@ export default {
   methods: {
     handleMoveStart(e) {
       const { clientX, clientY } = e;
-      console.log({ clientX, clientY }, "start");
       this.dragDetail.dragStart.x = e.clientX;
       this.dragDetail.dragStart.y = e.clientY;
     },
@@ -90,10 +91,34 @@ export default {
       this.dragDetail.dragEnd.x = e.clientX;
       this.dragDetail.dragEnd.y = e.clientY;
       const { clientX, clientY } = e;
-      console.log({ clientX, clientY }, "end");
       this.style.top += this.dragDetail.dragEnd.y - this.dragDetail.dragStart.y;
       this.style.left +=
         this.dragDetail.dragEnd.x - this.dragDetail.dragStart.x;
+    },
+    mousedown(e) {
+      if(e.type=='touchstart'){
+        const ev = e.changedTouches[0]
+        this.dragDetail.dragStart.x = ev.screenX;
+        this.dragDetail.dragStart.y = ev.screenY;
+      }
+
+
+
+    },
+    mouseup(e) {
+
+      if(e.type=='touchend'){
+        const ev = e.changedTouches[0]
+        if(ev){
+          const { screenX, screenY } = ev;
+          this.dragDetail.dragEnd.x = screenX;
+          this.dragDetail.dragEnd.y = screenY;
+          this.style.top += this.dragDetail.dragEnd.y - this.dragDetail.dragStart.y;
+          this.style.left +=
+                  this.dragDetail.dragEnd.x - this.dragDetail.dragStart.x;
+        }
+      }
+
     },
     closeModal() {
       this.$emit("update:show", false);

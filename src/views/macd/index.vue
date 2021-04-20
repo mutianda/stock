@@ -1,6 +1,7 @@
 <template>
   <div>
     <div>
+      <a href="http://onlinestock.cn/txt/qs.txt" download="qs.txt" style="color: red">下载</a>
       <el-button
         type="danger"
         @click="getAllKLine('all')"
