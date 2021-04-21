@@ -1,18 +1,15 @@
 <template>
   <div>
     <div>
-      <el-button
-              type="danger"
-              >
-      <a
-        href="http://onlinestock.cn/txt/qs.txt"
-        download="qs.txt"
-        target="_blank"
-        style="color: red"
-        >下载</a
-      >
-      </el-button
-              >
+      <el-button type="danger">
+        <a
+          href="http://onlinestock.cn/txt/qs.txt"
+          download="qs.txt"
+          target="_blank"
+          style="color: red"
+          >下载</a
+        >
+      </el-button>
       <el-button
         type="danger"
         @click="getAllKLine('all')"
@@ -33,8 +30,8 @@
       >
       <el-button
         type="danger"
-        @click="getAllKLine('dbllianban-'+lianbanLength)"
-        v-loading="beReady &&currentType.indexOf('dbllianban-') > -1"
+        @click="getAllKLine('dbllianban-' + lianbanLength)"
+        v-loading="beReady && currentType.indexOf('dbllianban-') > -1"
         >底背离连扳</el-button
       >
       <el-button
@@ -310,7 +307,6 @@ export default {
         this.dblList.map(item => item.name).length,
         this.dblList.map(item => item.name).join("、")
       );
-
     },
     beRised(item) {
       const l = item.macd.length - 1;

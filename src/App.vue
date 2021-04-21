@@ -61,8 +61,8 @@ export default {
     },
 
     realTimeStock(data) {
-      this.tableData = data.sort((a,b)=>b.f170-a.f170);
-      console.log(this.tableData,'table');
+      this.tableData = data.sort((a, b) => b.f170 - a.f170);
+      console.log(this.tableData, "table");
       this.showWsModal = true;
       const timer = setTimeout(() => {
         this.showWsModal = false;

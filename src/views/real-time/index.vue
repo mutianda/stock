@@ -97,10 +97,12 @@ export default {
       this.$refs.addOrEditForm.openModal(data, isEdit);
     },
     remove(row) {
-      this.axios.removeRealTimePush({ share_code: row.share_code }).then(res => {
-        this.$message.success("删除成功");
-        this.getTable();
-      });
+      this.axios
+        .removeRealTimePush({ share_code: row.share_code })
+        .then(res => {
+          this.$message.success("删除成功");
+          this.getTable();
+        });
     }
   }
 };

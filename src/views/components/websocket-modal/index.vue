@@ -54,7 +54,9 @@ export default {
   },
   methods: {
     removeRealTimePush(item) {
-      this.$_api.realTime.removeRealTimePush({ share_code: row.share_code  }).then(res => {});
+      this.$_api.realTime
+        .removeRealTimePush({ share_code: row.share_code })
+        .then(res => {});
     }
   }
 };

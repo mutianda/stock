@@ -520,8 +520,8 @@ export default {
       });
     },
     openAddRealTimePush(start = 0, end = 1) {
-      let price_rise = 0
-      let  price_down = 0
+      let price_rise = 0;
+      let price_down = 0;
       for (let i = start; i < end + 1; i++) {
         const item = this.klineList[this.computeIndex].kline[i];
 
@@ -530,7 +530,6 @@ export default {
         }
         if (!price_rise || item.high > price_rise) {
           price_rise = item.high;
-
         }
       }
       const data = {
@@ -651,11 +650,9 @@ export default {
 .echart {
   width: 100%;
   height: calc(100% - 300px);
-  opacity: .1;
 }
 .echart2 {
   width: 100%;
   height: 300px;
-  opacity: .1;
 }
 </style>
