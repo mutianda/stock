@@ -69,6 +69,12 @@
           }}
           名称：{{ klineList[computeIndex].name }}</span
         >
+        连扳时间
+        <span
+          v-for="item in klineList[computeIndex].lianban"
+          :key="item.time"
+          >{{ item.time }}</span
+        >
       </div>
     </coolModal>
     <div style="margin: 10px auto" v-if="klineList.length">
@@ -93,7 +99,6 @@
       <el-button @click="autoPlay" size="small" type="primary">{{
         playing ? "start" : "stop"
       }}</el-button>
-      {{ klineList[computeIndex].lianban || "" }}
     </div>
     <div id="chart" class="echart"></div>
     <div id="chart2" class="echart2"></div>
