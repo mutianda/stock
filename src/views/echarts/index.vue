@@ -96,9 +96,24 @@
         type="success"
         >next</el-button
       >
+
       <el-button @click="autoPlay" size="small" type="primary">{{
         playing ? "start" : "stop"
       }}</el-button>
+      <el-select
+        v-model="klineType"
+        placeholder="请选择"
+        size="small"
+        @change="changeKline"
+      >
+        <el-option
+          v-for="item in klineTypeList"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        >
+        </el-option>
+      </el-select>
     </div>
     <div id="chart" class="echart"></div>
     <div id="chart2" class="echart2"></div>
@@ -122,7 +137,14 @@ export default {
       playing: true,
       time: null,
       showModal: false,
-      timeLength: 15
+      timeLength: 15,
+      klineType: "kline",
+      klineTypeList: [
+        { label: "30分钟", value: "kline_30m" },
+        { label: "60分钟", value: "kline_60m" },
+        { label: "日线图", value: "kline" },
+        { label: "周线图", value: "kline_week" }
+      ]
     };
   },
   computed: {},
@@ -615,6 +637,20 @@ export default {
       this.$_api.common.makeTxt(data).then(res => {
         this.$message.success(res.data);
       });
+    },
+    changeKline(type) {
+      if (type == "kline") {
+        this.computedEchart(this.klineList[this.computeIndex]);
+      } else {
+        const shareCode = this.klineList[this.computeIndex].share_code;
+        this.$_api.common.getKline({ shareCode, type }).then(res => {
+          if (res.data) {
+            this.computedEchart(res.data);
+          } else {
+            this.$message.error("暂无");
+          }
+        });
+      }
     }
   },
   activated() {

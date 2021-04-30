@@ -1,9 +1,16 @@
 import CoolModal from "./cool-modal";
-const components = { CoolModal };
+import CoolButton from "./cool-button";
+import CoolPagination from "./cool-pagination";
+const components = [
+  { com: CoolModal, name: "CoolModal" },
+  { com: CoolButton, name: "CoolButton" },
+  { com: CoolPagination, name: "CoolPagination" }
+];
 const install = function(Vue) {
-  Object.keys(components).forEach(key => {
-    Vue.component(key, components[key]);
+  components.forEach(item => {
+    Vue.component(item.name, item.com);
   });
+  //     Vue.component(key, components[key]);
 };
 if (typeof window !== "undefined" && window.Vue) {
   install(window.Vue);

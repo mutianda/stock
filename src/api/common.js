@@ -1,5 +1,5 @@
 //
-import request from '@/utils/axios'
+import request from "@/utils/axios";
 //
 // // console.log(request);
 // // debugger
@@ -20,19 +20,24 @@ import request from '@/utils/axios'
 // }
 export default {
   getAllKLine(data) {
-
     return request({
-      url: 'getAllKline', // 假地址 自行替换
-      method: 'post',
+      url: "getAllKline", // 假地址 自行替换
+      method: "post",
       data
-    })
+    });
+  },
+  getKline(data) {
+    return request({
+      url: "getKline", // 假地址 自行替换
+      method: "post",
+      data
+    });
   },
   makeTxt(data) {
-
     return request({
-      url: 'makeTxt', // 假地址 自行替换
-      method: 'post',
+      url: "makeTxt", // 假地址 自行替换
+      method: "post",
       data
-    })
-  },
-}
+    });
+  }
+};

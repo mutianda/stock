@@ -27,6 +27,9 @@
         <el-button type="success" @click="addOrEdit({}, false)" size="mini"
           >新增</el-button
         >
+        <cool-button type="success" size="mini">
+          新增
+        </cool-button>
       </div>
     </div>
     <div class="table-box">
@@ -56,6 +59,13 @@
           </template>
         </el-table-column>
       </el-table>
+      <cool-pagination
+        :page-config="searchForm"
+        @page-change="pageChange"
+        layout="total, sizes, prev, pager, next, jumper"
+        :page-sizes="[10, 20, 30, 40]"
+      >
+      </cool-pagination>
     </div>
     <add-or-edit-modal ref="addOrEditForm" @getTable="getTable" />
   </div>
@@ -72,7 +82,8 @@ export default {
       axios: this.$_api.realTime,
       searchForm: {
         pageNum: 1,
-        pageSize: 20
+        pageSize: 20,
+        total: 0
       },
       tableData: []
     };
@@ -87,6 +98,11 @@ export default {
     this.getTable();
   },
   methods: {
+    pageChange(pageSize, pageNum) {
+      this.searchForm.pageNum = pageNum;
+      this.searchForm.pageSize = pageSize;
+      this.getTable();
+    },
     getTable(flag) {
       flag && (this.searchForm.pageNum = 1);
       this.axios.getRealTimePush({ ...this.searchForm }).then(res => {
