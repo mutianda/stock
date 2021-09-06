@@ -100,20 +100,23 @@
       <el-button @click="autoPlay" size="small" type="primary">{{
         playing ? "start" : "stop"
       }}</el-button>
-      <el-select
-        v-model="klineType"
-        placeholder="请选择"
-        size="small"
-        @change="changeKline"
-      >
-        <el-option
-          v-for="item in klineTypeList"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        >
-        </el-option>
-      </el-select>
+      <el-button type="primary" size="small"  v-for="item in klineTypeList"
+                 :key="item.value" @click="changeKline(item)" :plain="item.value!=currentType" :disabled="buttonLoading">{{item.label}}</el-button>
+<!--      <el-select-->
+
+<!--        v-model="klineType"-->
+<!--        placeholder="请选择"-->
+<!--        size="small"-->
+<!--        @change="changeKline"-->
+<!--      >-->
+<!--        <el-option-->
+<!--          v-for="item in klineTypeList"-->
+<!--          :key="item.value"-->
+<!--          :label="item.label"-->
+<!--          :value="item.value"-->
+<!--        >-->
+<!--        </el-option>-->
+<!--      </el-select>-->
     </div>
     <div id="chart" class="echart"></div>
     <div id="chart2" class="echart2"></div>
@@ -144,7 +147,9 @@ export default {
         { label: "60分钟", value: "kline_60m" },
         { label: "日线图", value: "kline" },
         { label: "周线图", value: "kline_week" }
-      ]
+      ],
+      currentType:'kline_30m',
+      buttonLoading:false,
     };
   },
   computed: {},
@@ -545,6 +550,7 @@ export default {
         //   }
         // }
       });
+      this.buttonLoading = false
     },
     openAddRealTimePush(start = 0, end = 1) {
       let price_rise = 0;
@@ -638,12 +644,14 @@ export default {
         this.$message.success(res.data);
       });
     },
-    changeKline(type) {
-      if (type == "kline") {
+    changeKline({value}) {
+      this.currentType = value
+      this.buttonLoading = true
+      if (value == "kline") {
         this.computedEchart(this.klineList[this.computeIndex]);
       } else {
         const shareCode = this.klineList[this.computeIndex].share_code;
-        this.$_api.common.getKline({ shareCode, type }).then(res => {
+        this.$_api.common.getKline({ shareCode, value }).then(res => {
           if (res.data) {
             this.computedEchart(res.data);
           } else {
@@ -659,6 +667,8 @@ export default {
       document.getElementById("chart2"),
       "dark"
     );
+    this.currentType='kline_30m'
+    this.buttonLoading=false
     const kline = this.$route.params.kline;
     const index = this.$route.params.index || 0;
     if (kline) {

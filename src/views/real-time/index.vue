@@ -34,7 +34,7 @@
         :data="tableData"
         stripe
         class="custom-table"
-        height="100%"
+        height="90%"
         :border="true"
       >
         <el-table-column prop="share_code" label="股票编码" width="180">
@@ -56,6 +56,7 @@
           </template>
         </el-table-column>
       </el-table>
+      <common-pagination :pageObj="searchForm" @page-change="pageChange"></common-pagination>
     </div>
     <add-or-edit-modal ref="addOrEditForm" @getTable="getTable" />
   </div>
@@ -63,6 +64,7 @@
 
 <script>
 import AddOrEditModal from "@v/components/real-time-modal";
+
 export default {
   name: "index",
   components: { AddOrEditModal },
@@ -72,7 +74,8 @@ export default {
       axios: this.$_api.realTime,
       searchForm: {
         pageNum: 1,
-        pageSize: 20
+        pageSize: 200,
+        total:0
       },
       tableData: []
     };
@@ -87,10 +90,14 @@ export default {
     this.getTable();
   },
   methods: {
+    pageChange(pageSize,pageNum){
+      //咋啦
+    },
     getTable(flag) {
       flag && (this.searchForm.pageNum = 1);
       this.axios.getRealTimePush({ ...this.searchForm }).then(res => {
         this.tableData = res.data;
+        this.searchForm.total = 1000
       });
     },
     addOrEdit(data = {}, isEdit) {

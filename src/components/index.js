@@ -10,7 +10,6 @@ const install = function(Vue) {
   components.forEach(item => {
     Vue.component(item.name, item.com);
   });
-  //     Vue.component(key, components[key]);
 };
 if (typeof window !== "undefined" && window.Vue) {
   install(window.Vue);

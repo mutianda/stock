@@ -23,6 +23,12 @@ const menuRouter = [
     name: "macd",
     title: "MACD",
     component: () => import("@v/macd")
+  },
+  {
+    path: "/table",
+    name: "table",
+    title: "table",
+    component: () => import("@v/table-test")
   }
 ];
 const defaultRouter = [];
