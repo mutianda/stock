@@ -1,10 +1,10 @@
 <template>
   <div class="echarts-box">
     <coolModal :show.sync="showModal" title="操作" width="40%">
-      <div v-if="klineList.length">
+      <div v-if="shareList.length">
         <el-button
           @click="preOne"
-          :disabled="klineList.length < 1 || computeIndex == 0"
+          :disabled="shareList.length < 1 || computeIndex == 0"
           size="small"
           type="success"
           >上一个</el-button
@@ -12,7 +12,7 @@
         <el-button
           @click="nextOne"
           :disabled="
-            klineList.length < 1 || computeIndex == klineList.length - 1
+            shareList.length < 1 || computeIndex == shareList.length - 1
           "
           size="small"
           type="success"
@@ -28,7 +28,7 @@
         <el-button
           type="success"
           size="small"
-          @click="computedEchart(klineList[computeIndex])"
+          @click="changeKline()"
           >刷新</el-button
         >
         <el-button
@@ -42,56 +42,56 @@
           <span style="padding: 0 5px 0 30px">
             趋势中
           </span>
-          <el-switch v-model="klineList[computeIndex].qs"> </el-switch>
+          <el-switch v-model="shareList[computeIndex].qs"> </el-switch>
           <span style="padding: 0 5px 0 30px">
             底部启动
           </span>
-          <el-switch v-model="klineList[computeIndex].dbqd"> </el-switch>
+          <el-switch v-model="shareList[computeIndex].dbqd"> </el-switch>
           <span style="padding: 0 5px 0 30px">
             突破中枢
           </span>
-          <el-switch v-model="klineList[computeIndex].tpzd"> </el-switch>
+          <el-switch v-model="shareList[computeIndex].tpzd"> </el-switch>
           <span style="padding: 0 5px 0 30px">
             加速中
           </span>
-          <el-switch v-model="klineList[computeIndex].jiasu"> </el-switch>
+          <el-switch v-model="shareList[computeIndex].jiasu"> </el-switch>
           <span style="padding: 0 5px 0 30px">
             背离开始
           </span>
-          <el-switch v-model="klineList[computeIndex].kaishi"> </el-switch>
+          <el-switch v-model="shareList[computeIndex].kaishi"> </el-switch>
         </div>
 
         <span
-          v-if="klineList.length"
+          v-if="shareList.length"
           style="float: left;color: #111;line-height: 50px;"
-          >总共：{{ klineList.length }} 当前：{{ computeIndex + 1 }} 代码：{{
-            klineList[computeIndex].code
+          >总共：{{ shareList.length }} 当前：{{ computeIndex + 1 }} 代码：{{
+            shareList[computeIndex].code
           }}
-          名称：{{ klineList[computeIndex].name }}</span
+          名称：{{ shareList[computeIndex].name }}</span
         >
         连扳时间
         <span
-          v-for="item in klineList[computeIndex].lianban"
+          v-for="item in shareList[computeIndex].lianban"
           :key="item.time"
           >{{ item.time }}</span
         >
       </div>
     </coolModal>
-    <div style="margin: 10px auto" v-if="klineList.length">
+    <div style="margin: 10px auto" v-if="shareList.length">
       <el-button @click="goBack" size="small" type="info">Back</el-button>
       <el-button @click="showModal = true" size="small" type="primary"
         >Open</el-button
       >
       <el-button
         @click="preOne"
-        :disabled="klineList.length < 1 || computeIndex == 0"
+        :disabled="shareList.length < 1 || computeIndex == 0"
         size="small"
         type="success"
         >pre</el-button
       >
       <el-button
         @click="nextOne"
-        :disabled="klineList.length < 1 || computeIndex == klineList.length - 1"
+        :disabled="shareList.length < 1 || computeIndex == shareList.length - 1"
         size="small"
         type="success"
         >next</el-button
@@ -101,7 +101,7 @@
         playing ? "start" : "stop"
       }}</el-button>
       <el-button type="primary" size="small"  v-for="item in klineTypeList"
-                 :key="item.value" @click="changeKline(item)" :plain="item.value!=currentType" :disabled="buttonLoading">{{item.label}}</el-button>
+                 :key="item.value" @click="changeKline(item.value)" :plain="item.value!=currentType" :disabled="buttonLoading">{{item.label}}</el-button>
 <!--      <el-select-->
 
 <!--        v-model="klineType"-->
@@ -134,7 +134,7 @@ export default {
   data() {
     return {
       echart: null,
-      klineList: [],
+      shareList: [],
       computeIndex: 0,
       echart2: null,
       playing: true,
@@ -143,21 +143,22 @@ export default {
       timeLength: 15,
       klineType: "kline",
       klineTypeList: [
+        { label: "日线图", value: "kline" },
         { label: "30分钟", value: "kline_30m" },
         { label: "60分钟", value: "kline_60m" },
-        { label: "日线图", value: "kline" },
         { label: "周线图", value: "kline_week" }
       ],
-      currentType:'kline_30m',
+      currentType:'kline',
       buttonLoading:false,
+      currentShare:{}
     };
   },
   computed: {},
   methods: {
     addRealTime() {
       const data = {
-        share_code: this.klineList[this.computeIndex].code,
-        share_name: this.klineList[this.computeIndex].name,
+        share_code: this.shareList[this.computeIndex].code,
+        share_name: this.shareList[this.computeIndex].name,
         user_id: 1
       };
       this.$refs.realTime.openModal(data, false);
@@ -534,7 +535,7 @@ export default {
         const start = Math.max(params.areas[0].coordRange[0], 0);
         const end = Math.min(
           params.areas[0].coordRange[1],
-          this.klineList[this.computeIndex].kline.length - 1
+          this.currentShare.kline.length - 1
         );
 
         this.openAddRealTimePush(start, end);
@@ -556,7 +557,7 @@ export default {
       let price_rise = 0;
       let price_down = 0;
       for (let i = start; i < end + 1; i++) {
-        const item = this.klineList[this.computeIndex].kline[i];
+        const item = this.currentShare.kline[i];
 
         if (!price_down || item.low < price_down) {
           price_down = item.low;
@@ -566,8 +567,8 @@ export default {
         }
       }
       const data = {
-        share_code: this.klineList[this.computeIndex].code,
-        share_name: this.klineList[this.computeIndex].name,
+        share_code: this.currentShare.code,
+        share_name: this.currentShare.name,
         price_rise,
         price_down,
         user_id: 1
@@ -577,11 +578,12 @@ export default {
     preOne() {
       this.computeIndex--;
       // console.log(kline);
-      this.computedEchart(this.klineList[this.computeIndex]);
+      this.changeKline('kline')
+
     },
     nextOne() {
       this.computeIndex++;
-      this.computedEchart(this.klineList[this.computeIndex]);
+      this.changeKline('kline')
     },
     autoPlay() {
       this.playing = !this.playing;
@@ -623,7 +625,7 @@ export default {
         jiasu: []
       };
 
-      this.klineList.forEach(item => {
+      this.shareList.forEach(item => {
         if (item.qs) {
           data.qs.push(item.code);
         }
@@ -644,21 +646,19 @@ export default {
         this.$message.success(res.data);
       });
     },
-    changeKline({value}) {
-      this.currentType = value
+    changeKline(type='kline') {
+      this.currentType = type
       this.buttonLoading = true
-      if (value == "kline") {
-        this.computedEchart(this.klineList[this.computeIndex]);
-      } else {
-        const shareCode = this.klineList[this.computeIndex].share_code;
-        this.$_api.common.getKline({ shareCode, value }).then(res => {
-          if (res.data) {
-            this.computedEchart(res.data);
-          } else {
-            this.$message.error("暂无");
-          }
-        });
-      }
+      const shareCode = this.shareList[this.computeIndex].share_code;
+      this.$_api.common.getKline({ type,shareCode }).then(res => {
+        if (res.data) {
+          this.currentShare = res.data
+          this.computedEchart(res.data);
+        } else {
+          this.$message.error("暂无");
+        }
+      });
+
     }
   },
   activated() {
@@ -667,15 +667,14 @@ export default {
       document.getElementById("chart2"),
       "dark"
     );
-    this.currentType='kline_30m'
     this.buttonLoading=false
-    const kline = this.$route.params.kline;
+    const shareList = this.$route.params.shareList;
     const index = this.$route.params.index || 0;
-    if (kline) {
-      this.klineList = kline;
+    if (shareList) {
+      this.shareList = shareList;
       this.computeIndex = index;
       // console.log(kline);
-      this.computedEchart(kline[index]);
+      this.changeKline('kline')
       window.addEventListener("resize", () => {
         this.echart.resize();
         this.echart2.resize();
@@ -701,9 +700,11 @@ export default {
 .echart {
   width: 100%;
   height: calc(100% - 300px);
+  opacity: .2;
 }
 .echart2 {
   width: 100%;
+  opacity: .2;
   height: 300px;
 }
 </style>
